@@ -1,0 +1,75 @@
+1、git和svn很大的区别之一，就是git是“分布式”的。
+说“分布式”太抽象了。具体地说：就是每一个终端机器都是一台完整的服务器，就算没有中央服务器（svn不能没有中央服务器，而git没有中央服务器也可以工作，只不过是让developers之间交换工作成果变得很麻烦），
+git也可以工作。
+也就是说：每台机器都保存了git仓库的完整备份。就算与与中央服务器失去链接，甚至是没有网络，git依然可以工作。
+因为自己的机器就是一台git服务器。我们可以向本地提交工作。
+
+理解git的一切，首先就算要理解“git目录”，也就是目录中.git这个目录。这个目录是用来保存元数据和对象数据库的地方。每次clone镜像仓库的时候，实际就算copy这个git目录的数据。
+从项目中取出某个版本的所有文件和目录，用来开始工作的叫做工作目录：也就是包含我们的代码目录。
+注意：：：：工作目录其实就是从git目录中的压缩对象数据库中提取出来的。
+知道这一点，就不难理解为什么git可以没有中央服务器，可以没有网络。
+因为我们完全可以把自己的机子当做一个服务器，更详细地说，就是那个“git目录”就是我们的服务器。
+我们向那个服务器（目录）提交修改，以及回退到那个服务器记录的某个历史版本。这一切操作仅仅只是在操作本地（操作本地服务器，即本地git仓库）。
+git会在本地服务器中记录所有的改动历史，也会根据操作，从仓库中复制出正确的内容到我们的工作目录。
+
+2、暂存区
+暂存区也在git目录中。暂存区也是git一个非常重要的概念。
+git的文件状态有三种：modified，staged, committed。可想而知，暂存区有多重要。
+git的很多操作，比如add，stage就是在把我们的修改保存到暂存区中。最后一次性把暂存区中的修改提交（commit）到git仓库中（这里依然是指本地仓库）。
+
+3、git checkout
+git checkout命令容易产生误解。
+第一：git的命令行提示中也可以见到“use gitcheckout --<file> to discard changes in working directory”. 也就是说，git checkout --file 这个命令会恢复工作目录。
+把工作目录恢复到仓库的状态，或者是上次暂存的状态，这个取决于有没有执行过commit。
+第二： git checkout name ，中间没有--符号，这个命令是切换到另一个分支。所以有没有--，git checkout执行的操作有很大区别。
+
+4、git pull 和git fetch
+git fetch：相当于是从远程获取最新版本到本地(比如：fetch origin master到本地的master)，不会自动merge
+git pull：相当于是从远程获取最新版本并merge到本地
+也就是说git pull 相当于git fetch + git merge
+
+5、分支重命名
+5.1重命名本地分支	
+git branch -m [old] [new]
+5.2重命名远程分支
+重命名远程分支就是删除远程分支、重命名本地分支、推送本地分支到远程
+git push --delete origin [old]
+git branch -m [old] [new]
+git push origin new
+其中，如果当期位于old分支内，重命名分支可以不用制定old分支名。
+
+6、revert某个文件到某次提交
+6.1 git log x.txt 查看提交日志记下提交的id，如"commit 7641210b242a95eed17827dd8159e76bdad6d619",“7641210b242a95eed17827dd8159e76bdad6d619”就是会被用到的id
+6.2 git reset a4e215234aa4927c85693dca7b68e9976948a35e x.txt
+6.3 git commit
+6.4 git checkout x.txt 更新到工作目录
+6.5 git push origin branchname
+
+7、git pull时遇到error: cannot lock ref ‘xxx’: ref xxx is at （一个commitID） but expected的解决办法
+问题原因：
+原因是你这个git工程的.git/refs目录下跟踪的某些git分支，在git pull的时候，与远端的对应分支的refs对比发现不同，所以导致git pull报错。
+通常产生这个问题的原因是（以分支git/yousa/feature_01为例）：
+有人操作git/yousa/feature_01这个分支，在git push的时候使用了git push –force，（当然这个人的git push是push不上去），导致远端分支被覆盖，你本地的refs与远端无法一致，导致问题
+git分支是不区分大小写的，如果有人删除掉这个远端分支又重新新建了一个这个分支也会出现同样的问题。
+
+解决办法：
+根据前面的原因有一些操作方法，基本思路就是要么，强行git pull；要么则是删除掉有问题的refs，再进行git pull（个人还是推荐第二种）
+（以分支git/yousa/feature_01为例）
+7.1、删除有问题的refs，可以直接在.git/refs下面根据错误提示删除对应的refs文件，比如这个就是需要删除refs/remotes/origin/git/yousa/feature_01文件（嫌麻烦直接删除整个refs目录也行）
+或者：使用git命令删除相应refs文件，git update-ref -d refs/remotes/origin/git/yousa/feature_01
+7.2、简单粗暴强行git pull，执行git pull -p
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
