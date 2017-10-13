@@ -33,3 +33,8 @@ git push origin new_branchname
 执行git remote prune origin可以将被删除分支从本地删除。
 或者：git fetch -p
 这个命令在fetch之后删除没有与远程分支对应的本地分支（不知是否会删除本地建立的还没有push到远程的那些分支？？？？？）。
+
+7、submodule的更新
+有时候用git submodule update更新submodule，发现并没有更新。处理如下：
+git submodule init
+git submodule update
