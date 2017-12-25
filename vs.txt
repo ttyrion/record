@@ -1,1 +1,14 @@
 1、vs最好看的字体：Lucida Console
+
+2、vs项目文件怎么排除某些代码文件？(https://msdn.microsoft.com/en-us/library/ms171455.aspx)
+2.1 如下，在一个代码文件的配置项中加一个Condition配置：
+<ClCompile Include="DatManager.cpp" Condition=" '$(Configuration)' == 'Release' " />
+上面这个配置，就标识只有Release build才会包含DatManager.cpp。
+<ClCompile Include="DatManager.cpp" Condition=" '$(TestProject)' == 'TEST' " />
+上面这个配置，就标识只有TestProject的配置为'TEST'的build才会包含DatManager.cpp。
+<PropertyGroup Label="Globals">
+    ****
+    <TestProject>TEST</TestProject>
+</PropertyGroup>
+在项目.vcxproj配置文件的PropertyGroup中增加一个tag'TestProject'，并配置对应的值，即可让改配置包含或者不包含DatManager.cpp。
+上面这个实例是配置在该.vcxproj的全局PropertyGroup配置里面的，也可以配置在其他配置的PropertyGroup里面。
