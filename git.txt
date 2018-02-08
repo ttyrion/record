@@ -38,6 +38,14 @@ git branch -m [old] [new]
 git push origin new
 其中，如果当期位于old分支内，重命名分支可以不用制定old分支名。
 
+6、修改最近一次的提交日志
+git commit --amend -m ”新日志”
+如果之前的commit已经被push到远程，那么还需要git push --force来把远程分支的提交日志改掉。
+
+7、撤销git add
+要从暂存区撤销添加的文件可以用reset。
+撤销添加某个文件： git reset <file>
+撤销添加所有文件： git reset
 
 7、git pull时遇到error: cannot lock ref ‘xxx’: ref xxx is at （一个commitID） but expected的解决办法
 问题原因：
