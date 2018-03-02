@@ -19,9 +19,14 @@ git的很多操作，比如add，stage就是在把我们的修改保存到暂存
 
 3、git checkout
 git checkout命令容易产生误解。
-第一：git的命令行提示中也可以见到“use gitcheckout --<file> to discard changes in working directory”. 也就是说，git checkout --file 这个命令会恢复工作目录。
-把工作目录恢复到仓库的状态，或者是上次暂存的状态，这个取决于有没有执行过commit。
-第二： git checkout name ，中间没有--符号，这个命令是切换到另一个分支。所以有没有--，git checkout执行的操作有很大区别。
+checkout常用于以下三种场景：
+3.1 切换分支
+    git checkout branch_name
+3.2 创建本地分支
+    git checkout -b branch_name
+3.3 拉取本地不存在的文件
+    git checkout filename 拉取文件filename
+    git checkout .        拉取当前目录
 
 4、git pull 和git fetch
 git fetch：相当于是从远程获取最新版本到本地(比如：fetch origin master到本地的master)，不会自动merge
