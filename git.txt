@@ -81,6 +81,22 @@ git merge remotes/origin/dev
 试想一下，如果merge request是基于一次次的commit，上述开发场景中最后合并代码的工作量恐怕会很恐怖。
 
 
+9、git删除文件：包括历史记录
+有些时候不小心上传了一些敏感文件(例如密码), 就需要一个方法, 永久的删除这些文件(包括该文件的历史记录).
+9.1 从本地repo中删除该文件
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch path-of-your-removing-file' --prune-empty --tag-name-filter cat -- --all
+其中path-of-your-removing-file是打算删除的文件。如果是多个文件，也可以用通配符。比如删除sound目录下面所有以music开头的文件,就可以这样：
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch sound/music*.mp3' --prune-empty --tag-name-filter cat -- --all
+看到类似“# Ref 'refs/heads/master' was rewritten”说明删除成功。
+9.2 push修改后的repo
+git push origin master --force
+这虽然跟删掉重新建一个repo有些类似, 但是好处是保留了其他不被删除的文件原有的历史记录, 所以还是有些不同的. 
+9.3 清理回收空间
+虽然上面我们已经删除了文件, 但是我们的repo里面仍然保留了这些objects, 等待垃圾回收(GC)，所以我们要用命令彻底清除它, 并收回空间。
+rm -rf .git/refs/original/
+git reflog expire --expire=now --all
+git gc --prune=now
+git gc --aggressive --prune=now
 
 
 
