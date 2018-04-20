@@ -107,6 +107,9 @@ git gc --aggressive --prune=now
     git clean [dir] -df
 
 11、 git取两次commit之间的日志
+11.1 git获取最近一次的提交id
+    git rev-parse HEAD
+11.2 git获取两次提交之间的日志
     git log [commit_id_1]..[commit_id_2]
     取(commit_id_1, commit_id_2]之间的提交日志。
 
