@@ -98,9 +98,17 @@ git reflog expire --expire=now --all
 git gc --prune=now
 git gc --aggressive --prune=now
 
+10、git清理
+10.1 测试清理，列出哪些文件会被清理
+    git clean -n
+10.2 删除当前目录下所有没有track的文件，不会删除.gitignore文件里面指定的文件，不论这些文件有没有被track
+    git clean -f
+10.3 删除指定路径下的没有被track的文件和文件夹
+    git clean [dir] -df
 
-
-
+11、 git取两次commit之间的日志
+    git log [commit_id_1]..[commit_id_2]
+    取(commit_id_1, commit_id_2]之间的提交日志。
 
 
 
