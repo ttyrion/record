@@ -113,7 +113,18 @@ git gc --aggressive --prune=now
     git log [commit_id_1]..[commit_id_2]
     取(commit_id_1, commit_id_2]之间的提交日志。
 
+12. Permanently authenticating with Git repositories:
+    12.1 Run following command to enable credential caching:
 
+    xxx:~/github/Linux> git config credential.helper store
+    xxx:~/github/Linux> git push https://github.com/ttyrion/Linux.git
+    Username for 'https://github.com': <username>
+    Password for 'https://ttyrion@github.com': <passwd>
+    Everything up-to-date
+    
+    12.2 After that, Use should also specify caching expire,
+    xxx:~/github/Linux> git config --global credential.helper 'cache --timeout 7200'
+After enabling credential caching, it will be cached for 7200 seconds (2 hour).
 
 
 
