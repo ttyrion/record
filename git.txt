@@ -67,6 +67,7 @@ git分支是不区分大小写的，如果有人删除掉这个远端分支又�
 7.2、简单粗暴强行git pull，执行git pull -p
 
 8、merge
+8.1 merge分支
 git生成一个merge request的时候，并不是基于某次或某几次commit，而是基于两个分支的差异状态。
 举例说明：
 有两个分支：一个master，一个基于master创建的分支dev。
@@ -80,6 +81,9 @@ git merge remotes/origin/dev
 此时可以发现，merge成功，并没有任何冲突，所有的dev分支的commit记录都合并到了master2分支，证明把dev merge到master是没有问题的。
 试想一下，如果merge request是基于一次次的commit，上述开发场景中最后合并代码的工作量恐怕会很恐怖。
 
+8.2 merge某次提交
+git也可以把其他分支的某次提交merge到当前分支:
+git cherry-pick [commit-id]
 
 9、git删除文件：包括历史记录
 有些时候不小心上传了一些敏感文件(例如密码), 就需要一个方法, 永久的删除这些文件(包括该文件的历史记录).
